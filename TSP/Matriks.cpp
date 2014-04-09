@@ -2,12 +2,15 @@
 
 // CTOR
 Matriks::Matriks()
-{}
+{
+	jumPengurang = 0;
+}
 
 // CTOR w/ PARAM
 Matriks::Matriks(vector<vector<int>> M)
 {
 	this->M = M;
+	jumPengurang = 0;
 }
 
 // CCTOR
@@ -29,9 +32,9 @@ Matriks::~Matriks() {}
 
 void Matriks::Print()
 {
-	for (auto it = M.begin(); it != M.end(); ++it)
+	for (auto it = M.begin()+1; it != M.end(); ++it)
 	{
-		for (auto itcol = it->begin(); itcol != it->end(); ++itcol)
+		for (auto itcol = it->begin()+1; itcol != it->end(); ++itcol)
 		{
 			// Jika 1 digit
 			if (*itcol<10 && *itcol!=-99)
@@ -47,27 +50,71 @@ void Matriks::Print()
 	cout << endl;
 }
 
+// Metode reduksi khusus utk matriks start. Tdk ada yg perlu di set infiniti(-99)
 void Matriks::Reduksi()
 {
+	jumPengurang=0;
 	// Reduksi baris
-	for (int row = 0; row < M.size(); ++row)
+	for (int row = 1; row < M.size(); ++row)
 	{
 		// Jika tidak ada nol pada baris -> reduksi baris
 		if (!isNolExistAtRow(row))
 		{
 			int Pengurang = getSmallestRowValue(row);
 			reduksiBaris(row, Pengurang);
+			jumPengurang += Pengurang;
 		}
 	}
 
 	//Reduksi kolom
-	for (int column = 0; column < M.size(); ++column)
+	for (int column = 1; column < M.size(); ++column)
 	{
 		// Jika tidak ada nol pada kolom -> reduksi kolom
 		if (!isNolExistAtColumn(column))
 		{
 			int Pengurang = getSmallestColumnValue(column);
 			reduksiKolom(column, Pengurang);
+			jumPengurang += Pengurang;
+		}
+	}
+}
+
+void Matriks::Reduksi(int noSimpulParent, int noSimpulAnak)
+{
+	jumPengurang=0;
+
+	// Set row=noSimpulParent infiniti
+	for(int column=1;column<M.size();++column)
+		M[noSimpulParent][column] = -99;
+
+	// Set column=noSimpulAnak infiniti
+	for(int row=1;row<M.size();++row)
+		M[row][noSimpulAnak] = -99;
+
+	// Set M(j,1) = infiniti
+	M[noSimpulAnak][1] = -99;
+
+	// Reduksi baris
+	for (int row = 1; row < M.size(); ++row)
+	{
+		// Jika tidak ada nol pada baris -> reduksi baris
+		if (!isNolExistAtRow(row))
+		{
+			int Pengurang = getSmallestRowValue(row);
+			reduksiBaris(row, Pengurang);
+			jumPengurang += Pengurang;
+		}
+	}
+
+	//Reduksi kolom
+	for (int column = 1; column < M.size(); ++column)
+	{
+		// Jika tidak ada nol pada kolom -> reduksi kolom
+		if (!isNolExistAtColumn(column))
+		{
+			int Pengurang = getSmallestColumnValue(column);
+			reduksiKolom(column, Pengurang);
+			jumPengurang += Pengurang;
 		}
 	}
 }
@@ -75,33 +122,7 @@ void Matriks::Reduksi()
 // Mendapatkan r
 int Matriks::getPengurang()
 {
-	int totalPengurang=0;
-
-	// Reduksi baris
-	for (int row = 0; row < M.size(); ++row)
-	{
-		// Jika tidak ada nol pada baris -> reduksi baris
-		if (!isNolExistAtRow(row))
-		{
-			int Pengurang = getSmallestRowValue(row);
-			reduksiBaris(row, Pengurang);
-			totalPengurang += Pengurang;
-		}
-	}
-
-	//Reduksi kolom
-	for (int column = 0; column < M.size(); ++column)
-	{
-		// Jika tidak ada nol pada kolom -> reduksi kolom
-		if (!isNolExistAtColumn(column))
-		{
-			int Pengurang = getSmallestColumnValue(column);
-			reduksiKolom(column, Pengurang);
-			totalPengurang += Pengurang;
-		}
-	}
-
-	return totalPengurang;
+	return jumPengurang;
 }
 
 void Matriks::setMatriks(vector<vector<int>> MM)
@@ -122,7 +143,7 @@ int Matriks::Size()
 // Fungsi reduksi matriks
 bool Matriks::isNolExistAtRow(int row)
 {
-	int column = 0;
+	int column = 1;
 	while (column < M.size() && M[row][column]!=0)
 	{
 		++column;
@@ -136,7 +157,7 @@ bool Matriks::isNolExistAtRow(int row)
 
 bool Matriks::isNolExistAtColumn(int column)
 {
-	int row = 0;
+	int row = 1;
 	while (row < M.size() && M[row][column] != 0)
 	{
 		++row;
@@ -174,7 +195,7 @@ int Matriks::getSmallestColumnValue(int column)
 
 void Matriks::reduksiBaris(int row, int Pengurang)
 {
-	for (int column = 0; column < M.size(); ++column)
+	for (int column = 1; column < M.size(); ++column)
 	{
 		// Jika nilai elemen != -99, kurangkan dengan pengurang
 		if (M[row][column] != -99)
@@ -184,7 +205,7 @@ void Matriks::reduksiBaris(int row, int Pengurang)
 
 void Matriks::reduksiKolom(int column, int Pengurang)
 {
-	for (int row = 0; row < M.size(); ++row)
+	for (int row = 1; row < M.size(); ++row)
 	{
 		// Jika nilai elemen != -99, kurangkan dengan pengurang
 		if (M[row][column] != -99)

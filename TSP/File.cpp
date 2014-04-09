@@ -14,6 +14,10 @@ void File::bacaMatriks()
 	ifstream infile(filename);
 	vector<vector<int>> M;	// Matriks penampung hasil bacaan
 
+	// Isi array ke 0 dengan dummy
+	vector<int> Dummy;
+	M.push_back(Dummy);
+
 	// Baca file
 	while (infile.good())
 	{
@@ -22,6 +26,10 @@ void File::bacaMatriks()
 		int i = 0;	char EOL = '\0';
 		string temp = "";
 		vector<int> tempV;
+		
+		// Isi array ke 0 dg dummy
+		int DummyInt;
+		tempV.push_back(DummyInt);
 
 		// Dapatkan tiap2 angka pada baris
 		while (buffer[i] != EOL)

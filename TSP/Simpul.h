@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <deque>
 #include <vector>
 #include "Matriks.h"
 using namespace std;
@@ -15,12 +16,23 @@ private:
 
 public:
 	static Matriks matriksBobot;		// matriks bobot graf (A)
+	static int simpulGenerated;
 
 	Simpul();
 	Simpul(int noSimpul, Simpul simpulParent);
 	~Simpul();	
+	void setMT(Matriks M);
+	void setCost(int N);
+	void setNoSimpul(int N);
 	bool isSolusi();
 	int getCost();
 	int getNoSimpul();
+	vector<int> getPassedNode();
 	Matriks getMatriksTereduksi();
+	bool isPassedNode(int simpulNum);
+	void Expand(vector<Simpul>& Q);
+	void insertSimpul(vector<Simpul>& Q);	
+	void insertPassedNode(int i);
+	bool isCostSmallest(vector<Simpul> Q);
+	void PrintPassedNode();
 };

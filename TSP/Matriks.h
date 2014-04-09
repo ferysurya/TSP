@@ -7,6 +7,7 @@ using namespace std;
 class Matriks{
 private:
 	vector<vector<int>> M;	// Isi dari matriks
+	int jumPengurang;
 
 	// Fungsi reduksi matriks
 	bool isNolExistAtRow(int row);
@@ -25,6 +26,7 @@ public:
 	
 	void setMatriks(vector<vector<int>> MM);
 	void Reduksi();	
+	void Reduksi(int noSimpulParent, int noSimpulAnak);
 	void Print();
 	int getPengurang();
 	int getElmt(int i, int j);
