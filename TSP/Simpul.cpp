@@ -9,6 +9,10 @@ Simpul::Simpul()
 {
 	Cost = 0;
 	noSimpul = 0;
+
+	X = rand()%980;
+	Y = rand()%650;
+	color = sf::Color::Red;
 }
 
 // CTOR w/ PARAM
@@ -25,6 +29,10 @@ Simpul::Simpul(int noSimpul, Simpul simpulParent)
 	// set PassedNode
 	PassedNode = simpulParent.getPassedNode();
 	PassedNode.push_back(noSimpul);
+
+	X = rand()%1000;
+	Y = rand()%700;
+	color = sf::Color::Red;
 }
 
 // DTOR
@@ -168,8 +176,56 @@ bool Simpul::isCostSmallest(vector<Simpul> Q)
 	return Smallest;
 }
 
-void Simpul::PrintPassedNode()
+string Simpul::PrintPassedNode()
 {
+	stringstream SS;
+	SS << "Tur terpendek : ";
 	for(int i=0;i<PassedNode.size();++i)
-		cout << PassedNode[i] << endl;
+		SS << PassedNode[i] << "-";
+
+	SS << PassedNode[0] << "\n";	// Node akhir
+
+	return SS.str();
+}
+
+// GUI Handling
+void Simpul::Draw(sf::RenderWindow& renderWindow)
+{
+	
+	// Buat lingkaran simpul
+	sf::CircleShape shape(15.f, 100);
+
+	// Isi sesuai properti warna
+	shape.setFillColor(color);
+
+	// Atur koordinat
+	shape.setPosition(sf::Vector2f(X, Y));
+
+	 // Gambar no simpul
+    sf::Font font;
+    if (!font.loadFromFile("Capriola-Regular.ttf"))
+        cout << "Couldn't load font" << endl;
+
+	sf::Text text(to_string(noSimpul), font, 20);
+	text.setColor(sf::Color::Blue);
+	text.setPosition(X+10, Y);
+
+	// Gambarkan
+	renderWindow.draw(shape);
+	renderWindow.draw(text);
+}
+
+int Simpul::getX()
+{
+	return X;
+}
+
+int Simpul::getY()
+{
+	return Y;
+}
+
+sf::Color Simpul::getColor()
+{
+	return color;
 }
