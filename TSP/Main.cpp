@@ -8,9 +8,9 @@ using namespace std;
 #define Nil 0
 
 int main() {
-
+	
 	// Handle file input
-	File F("Filematriks.txt");
+	File F("Filematriks2.txt");
 	F.bacaMatriks();
 
 	// Tampilkan matriksBobot
@@ -41,6 +41,7 @@ int main() {
 	{
 		Simpul X = Q.front();	// Ambil simpul terdepan
 		Q.erase(Q.begin());	// Pop depan
+
 		if(!X.isSolusi())
 		{
 			X.Expand(Q);

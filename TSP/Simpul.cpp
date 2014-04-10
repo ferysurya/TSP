@@ -15,11 +15,12 @@ Simpul::Simpul()
 Simpul::Simpul(int noSimpul, Simpul simpulParent)
 {
 	this->noSimpul = noSimpul;
-	Cost = hitungCost(simpulParent);
 
 	// set Matriks Tereduksinya
 	MT = simpulParent.getMatriksTereduksi();
 	MT.Reduksi(simpulParent.getNoSimpul(), noSimpul);	// Reduksi matriks parent-nya
+
+	Cost = hitungCost(simpulParent);
 
 	// set PassedNode
 	PassedNode = simpulParent.getPassedNode();
@@ -90,7 +91,6 @@ int Simpul::getNoSimpul()
 Matriks Simpul::getMatriksTereduksi()
 {
 	return MT;
-
 }
 
 vector<int> Simpul::getPassedNode()

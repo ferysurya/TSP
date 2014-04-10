@@ -16,12 +16,14 @@ Matriks::Matriks(vector<vector<int>> M)
 // CCTOR
 Matriks::Matriks(const Matriks &R)
 {
+	jumPengurang = R.jumPengurang;
 	M = R.M;
 }
 
 // OPREQ
 Matriks& Matriks::operator=(const Matriks &R)
 {
+	jumPengurang = R.jumPengurang;
 	M = R.M;
 
 	return *this;
@@ -53,7 +55,6 @@ void Matriks::Print()
 // Metode reduksi khusus utk matriks start. Tdk ada yg perlu di set infiniti(-99)
 void Matriks::Reduksi()
 {
-	jumPengurang=0;
 	// Reduksi baris
 	for (int row = 1; row < M.size(); ++row)
 	{
@@ -79,10 +80,29 @@ void Matriks::Reduksi()
 	}
 }
 
+bool Matriks::isInfiniteRow(int row)
+{
+	int j=1;
+	while(j<M.size() && M[row][j]==-99)
+		++j;
+
+	// Jika j>=M.size() maka Infiniti Row
+	return j>=M.size();
+}
+
+bool Matriks::isInfiniteColumn(int column)
+{
+	int i=1;
+	while(i<M.size() && M[i][column]==-99)
+		++i;
+
+	// Jika j>=M.szie() maka Infiniti Column
+	return i>=M.size();
+}
+
 void Matriks::Reduksi(int noSimpulParent, int noSimpulAnak)
 {
 	jumPengurang=0;
-
 	// Set row=noSimpulParent infiniti
 	for(int column=1;column<M.size();++column)
 		M[noSimpulParent][column] = -99;
@@ -98,7 +118,7 @@ void Matriks::Reduksi(int noSimpulParent, int noSimpulAnak)
 	for (int row = 1; row < M.size(); ++row)
 	{
 		// Jika tidak ada nol pada baris -> reduksi baris
-		if (!isNolExistAtRow(row))
+		if (!isNolExistAtRow(row) && !isInfiniteRow(row))
 		{
 			int Pengurang = getSmallestRowValue(row);
 			reduksiBaris(row, Pengurang);
@@ -110,7 +130,7 @@ void Matriks::Reduksi(int noSimpulParent, int noSimpulAnak)
 	for (int column = 1; column < M.size(); ++column)
 	{
 		// Jika tidak ada nol pada kolom -> reduksi kolom
-		if (!isNolExistAtColumn(column))
+		if (!isNolExistAtColumn(column) && !isInfiniteColumn(column))
 		{
 			int Pengurang = getSmallestColumnValue(column);
 			reduksiKolom(column, Pengurang);

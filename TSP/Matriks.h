@@ -28,6 +28,8 @@ public:
 	void Reduksi();	
 	void Reduksi(int noSimpulParent, int noSimpulAnak);
 	void Print();
+	bool isInfiniteRow(int row);
+	bool isInfiniteColumn(int column);
 	int getPengurang();
 	int getElmt(int i, int j);
 	int Size();
